@@ -1,0 +1,6 @@
+flask>=3.0
+flask-cors>=4.0
+numpy>=1.24
+librosa>=0.10
+soundfile>=0.12
+ai-edge-litert>=2.0
