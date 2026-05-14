@@ -1,6 +1,0 @@
-flask
-flask-cors
-numpy
-librosa
-soundfile
-tensorflow==2.15.0
