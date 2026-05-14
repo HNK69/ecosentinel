@@ -36,7 +36,7 @@ from backend.config import (
 from backend.utils.logger import setup_logger
 from backend.utils.cleanup import start_cleanup_scheduler, cleanup_uploads
 from backend.models.engine import InferenceEngine
-from frontend import get_html
+from frontend import get_landing_html, get_dashboard_html
 
 # ─────────────────────────────────────────────────
 # APPLICATION FACTORY
@@ -75,8 +75,15 @@ def _allowed_file(filename: str) -> bool:
 
 @app.route("/", methods=["GET"])
 def index():
-    """Serve the integrated ESP32-compatible dashboard."""
-    return Response(get_html(), mimetype="text/html")
+    """Serve the landing page."""
+    return Response(get_landing_html(), mimetype="text/html")
+
+
+@app.route("/dashboard", methods=["GET"])
+@app.route("/dashboard/", methods=["GET"])
+def dashboard_view():
+    """Serve the monitoring dashboard."""
+    return Response(get_dashboard_html(), mimetype="text/html")
 
 
 @app.route("/health", methods=["GET"])
