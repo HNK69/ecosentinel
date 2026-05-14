@@ -3,4 +3,4 @@ flask-cors
 numpy
 librosa
 soundfile
-tensorflow
+tensorflow==2.15.0
