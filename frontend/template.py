@@ -319,16 +319,15 @@ def get_dashboard_template():
     <div class="panel" id="panel-vib">
       <div class="panel-head">
         <h3>&#x1F4F3; Vibration Monitoring</h3>
-        <span class="tag tag-safe">IDLE</span>
+        <span class="tag tag-safe" id="vib-tag">IDLE</span>
       </div>
       <div class="panel-body">
         <div class="vib-wave" id="vib-wave"></div>
-        <div class="vib-stats">
-          <div class="vib-stat"><div class="vstat-label">X-Axis</div><div class="vstat-val" style="color:var(--text-muted)">—</div></div>
-          <div class="vib-stat"><div class="vstat-label">Y-Axis</div><div class="vstat-val" style="color:var(--text-muted)">—</div></div>
-          <div class="vib-stat"><div class="vstat-label">Z-Axis</div><div class="vstat-val" style="color:var(--text-muted)">—</div></div>
+        <div class="vib-status-container" id="vib-status-container">
+          <div class="vib-status-label" id="vib-status-text">Monitoring Stable</div>
+          <div class="vib-activity-indicator"></div>
         </div>
-        <div style="text-align:center;margin-top:8px;font-size:0.68rem;color:var(--text-muted)">Sensor offline — awaiting accelerometer data</div>
+        <div style="text-align:center;margin-top:10px;font-size:0.68rem;color:var(--text-muted)" id="vib-footer">Secure Perimeter &mdash; Vibration Scanning Active</div>
       </div>
     </div>
 

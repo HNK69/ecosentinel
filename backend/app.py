@@ -60,6 +60,7 @@ _system_state = {
     "total_predictions": 0,
     "total_threats": 0,
     "last_prediction": None,
+    "vibration_active": False,  # Simple boolean from SW-420 sensor
     "uptime_start": time.time(),
 }
 
@@ -110,9 +111,21 @@ def api_status():
         "total_predictions": _system_state["total_predictions"],
         "total_threats": _system_state["total_threats"],
         "last_prediction": _system_state["last_prediction"],
+        "vibration_active": _system_state["vibration_active"],
         "boot_time": _system_state["boot_time"],
         "timestamp": datetime.now(timezone.utc).isoformat(),
     })
+
+
+@app.route("/api/vibration", methods=["POST"])
+def update_vibration():
+    """Endpoint for ESP32 to push vibration sensor status."""
+    data = request.get_json()
+    if not data or "active" not in data:
+        return jsonify({"error": "Missing 'active' boolean"}), 400
+    
+    _system_state["vibration_active"] = bool(data["active"])
+    return jsonify({"status": "updated", "vibration_active": _system_state["vibration_active"]})
 
 
 @app.route("/predict", methods=["POST"])

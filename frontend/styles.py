@@ -130,13 +130,18 @@ section{padding:5rem 1.5rem;max-width:1100px;margin:0 auto}
 .gps-field .gps-lbl{font-size:0.62rem;letter-spacing:1.2px;text-transform:uppercase;color:var(--text-muted);margin-bottom:2px}
 .gps-field .gps-val{font-size:0.95rem;font-weight:600;font-variant-numeric:tabular-nums}
 
-/* ── VIBRATION ── */
-.vib-wave{height:60px;background:var(--bg-primary);border:1px solid var(--border);border-radius:var(--radius);display:flex;align-items:flex-end;justify-content:center;gap:2px;padding:8px;overflow:hidden}
+/* ── VIBRATION REFACTORED ── */
+.vib-wave{height:60px;background:var(--bg-primary);border:1px solid var(--border);border-radius:var(--radius);display:flex;align-items:flex-end;justify-content:center;gap:2px;padding:8px;overflow:hidden;position:relative}
 .vib-bar{width:3px;border-radius:2px;background:var(--accent);transition:height 0.3s;min-height:3px}
-.vib-stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:10px}
-.vib-stat{text-align:center}
-.vib-stat .vstat-label{font-size:0.6rem;letter-spacing:1px;text-transform:uppercase;color:var(--text-muted)}
-.vib-stat .vstat-val{font-size:0.9rem;font-weight:600;margin-top:2px;font-variant-numeric:tabular-nums}
+.vib-status-container{display:flex;flex-direction:column;align-items:center;justify-content:center;margin-top:12px;gap:6px;position:relative;z-index:2}
+.vib-status-label{font-size:1.1rem;font-weight:800;text-transform:uppercase;letter-spacing:2px;transition:all 0.3s;color:var(--text-muted)}
+.vib-activity-indicator{width:100%;height:3px;background:var(--border);border-radius:2px;position:relative;overflow:hidden;margin-top:4px}
+.vib-activity-indicator::after{content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;background:linear-gradient(90deg,transparent,var(--accent-bright),transparent);transition:opacity 0.3s;opacity:0}
+.state-vibrating .vib-activity-indicator::after{animation:slide-glow 1.5s infinite;opacity:1}
+.state-vibrating .vib-status-label{color:var(--accent-bright);text-shadow:0 0 12px var(--accent-glow)}
+.state-vibrating .vib-bar{background:var(--accent-bright);box-shadow:0 0 8px var(--accent-glow)}
+
+@keyframes slide-glow{from{left:-100%}to{left:100%}}
 
 /* ── FUSION ── */
 .fusion-ring{width:140px;height:140px;margin:0.5rem auto;position:relative}

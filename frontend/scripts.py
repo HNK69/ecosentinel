@@ -53,6 +53,33 @@ function updateStatusUI(d) {
   if (d.last_prediction) {
     applyPrediction(d.last_prediction);
   }
+
+  // Update vibration if present
+  if (d.hasOwnProperty('vibration_active')) {
+    updateVibrationUI(d.vibration_active);
+  }
+}
+
+function updateVibrationUI(active) {
+  const container = document.getElementById('vib-status-container');
+  const text = document.getElementById('vib-status-text');
+  const tag = document.getElementById('vib-tag');
+  const footer = document.getElementById('vib-footer');
+
+  if (active) {
+    container.classList.add('state-vibrating');
+    text.textContent = 'Vibration Detected';
+    tag.textContent = 'ACTIVE';
+    tag.className = 'tag tag-warn';
+    footer.textContent = 'Alert — Ground disturbance identified';
+    pulseVibration('warn');
+  } else {
+    container.classList.remove('state-vibrating');
+    text.textContent = 'Monitoring Stable';
+    tag.textContent = 'IDLE';
+    tag.className = 'tag tag-safe';
+    footer.textContent = 'Secure Perimeter — Vibration Scanning Active';
+  }
 }
 
 function updateOfflineUI() {
@@ -105,9 +132,6 @@ function applyPrediction(p) {
 
   // Add to timeline
   addTimelineEntry(p);
-
-  // Pulse vibration bars
-  pulseVibration(systemState);
 }
 
 // ── VIBRATION BARS ──
@@ -125,19 +149,25 @@ function initVibBars() {
 }
 
 function animateVibIdle() {
-  vibBars.forEach((bar, i) => {
-    const h = 3 + Math.sin(Date.now()/800 + i * 0.3) * 6 + Math.random() * 3;
-    bar.style.height = h + 'px';
-    bar.style.background = 'var(--accent)';
-  });
+  const isVibrating = document.getElementById('vib-status-container')?.classList.contains('state-vibrating');
+  if (isVibrating) {
+    // If actively vibrating, don't run idle animation here, let pulseVibration handle it or mix it
+    // Actually, we can just skip this tick
+  } else {
+    vibBars.forEach((bar, i) => {
+      const h = 3 + Math.sin(Date.now()/800 + i * 0.3) * 6 + Math.random() * 3;
+      bar.style.height = h + 'px';
+      bar.style.background = 'var(--accent)';
+    });
+  }
   requestAnimationFrame(animateVibIdle);
 }
 
 function pulseVibration(state) {
-  const color = state === 'crit' ? 'var(--red-critical)' : state === 'warn' ? 'var(--amber)' : 'var(--accent)';
-  const intensity = state === 'crit' ? 40 : state === 'warn' ? 25 : 10;
+  const color = state === 'crit' ? 'var(--red-critical)' : state === 'warn' ? 'var(--accent-bright)' : 'var(--accent)';
+  const intensity = state === 'crit' ? 45 : state === 'warn' ? 35 : 15;
   vibBars.forEach((bar) => {
-    bar.style.height = (3 + Math.random() * intensity) + 'px';
+    bar.style.height = (4 + Math.random() * intensity) + 'px';
     bar.style.background = color;
   });
 }
